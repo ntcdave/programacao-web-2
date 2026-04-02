@@ -1,4 +1,4 @@
-package br.edu.ifac.tarefasapi.model;
+package br.edu.ifac.tarefas_api.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

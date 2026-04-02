@@ -1,6 +1,6 @@
-package br.edu.ifac.tarefasapi.repository;
+package br.edu.ifac.tarefas_api.repository;
 
-import br.edu.ifac.tarefasapi.model.Tarefa;
+import br.edu.ifac.tarefas_api.model.Tarefa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
