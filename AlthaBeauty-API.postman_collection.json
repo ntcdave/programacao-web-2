@@ -1,0 +1,284 @@
+{
+	"info": {
+		"name": "Altha Beauty API",
+		"description": "API REST para gestão do Studio de Beleza Altha Beauty\n\nBase URL: http://localhost:8080\nH2 Console: http://localhost:8080/h2-console (JDBC URL: jdbc:h2:mem:althabeautydb)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "opencode"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"description": "CRUD de Clientes",
+			"item": [
+				{
+					"name": "Listar todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clientes"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clientes", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Maria Silva\",\n  \"telefone\": \"11999999999\",\n  \"email\": \"maria@email.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clientes"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Maria Silva Atualizada\",\n  \"telefone\": \"11988888888\",\n  \"email\": \"maria.novo@email.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clientes", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "clientes", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Serviços",
+			"description": "CRUD de Serviços",
+			"item": [
+				{
+					"name": "Listar todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/servicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "servicos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/servicos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "servicos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar serviço",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Corte de Cabelo\",\n  \"descricao\": \"Corte feminino com lavagem e finalização\",\n  \"preco\": 89.90,\n  \"duracaoMinutos\": 60\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/servicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "servicos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar serviço",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Corte Infantil\",\n  \"descricao\": \"Corte infantil com brinde\",\n  \"preco\": 59.90,\n  \"duracaoMinutos\": 40\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/servicos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "servicos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar serviço",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/servicos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "servicos", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agendamentos",
+			"description": "CRUD de Agendamentos\n\nRegra: Ao criar, o cliente e o serviço devem existir no banco.",
+			"item": [
+				{
+					"name": "Listar todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/agendamentos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "agendamentos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/agendamentos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "agendamentos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar agendamento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": { \"id\": 1 },\n  \"servico\": { \"id\": 1 },\n  \"dataHora\": \"2026-06-20T14:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/agendamentos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "agendamentos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar agendamento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": { \"id\": 1 },\n  \"servico\": { \"id\": 1 },\n  \"dataHora\": \"2026-06-21T10:00:00\",\n  \"status\": \"CONFIRMADO\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/agendamentos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "agendamentos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar agendamento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/agendamentos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "agendamentos", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
