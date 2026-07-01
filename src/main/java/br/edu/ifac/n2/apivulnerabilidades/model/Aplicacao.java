@@ -1,5 +1,6 @@
 package br.edu.ifac.n2.apivulnerabilidades.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Aplicacao {
     private String repositorioUrl;
 
     @OneToMany(mappedBy = "aplicacao", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("aplicacao")
     private List<Ocorrencia> ocorrencias;
 
     public Aplicacao() {}

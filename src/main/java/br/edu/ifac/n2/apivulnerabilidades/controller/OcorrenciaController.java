@@ -1,6 +1,7 @@
 package br.edu.ifac.n2.apivulnerabilidades.controller;
 
-import br.edu.ifac.n2.apivulnerabilidades.model.Ocorrencia;
+import br.edu.ifac.n2.apivulnerabilidades.dto.OcorrenciaRequest;
+import br.edu.ifac.n2.apivulnerabilidades.dto.OcorrenciaResponse;
 import br.edu.ifac.n2.apivulnerabilidades.model.StatusOcorrencia;
 import br.edu.ifac.n2.apivulnerabilidades.service.OcorrenciaService;
 import jakarta.validation.Valid;
@@ -20,28 +21,28 @@ public class OcorrenciaController {
     }
 
     @GetMapping
-    public List<Ocorrencia> listar() {
+    public List<OcorrenciaResponse> listar() {
         return service.listarTodas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ocorrencia> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<OcorrenciaResponse> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Ocorrencia criar(@Valid @RequestBody Ocorrencia ocorrencia) {
-        return service.salvar(ocorrencia);
+    public OcorrenciaResponse criar(@Valid @RequestBody OcorrenciaRequest request) {
+        return service.salvar(request);
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Ocorrencia> atualizarStatus(
+    public ResponseEntity<OcorrenciaResponse> atualizarStatus(
             @PathVariable Long id,
             @RequestParam StatusOcorrencia status) {
         try {
-            Ocorrencia atualizada = service.atualizarStatus(id, status);
+            OcorrenciaResponse atualizada = service.atualizarStatus(id, status);
             return ResponseEntity.ok(atualizada);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

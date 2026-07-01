@@ -1,5 +1,6 @@
 package br.edu.ifac.n2.apivulnerabilidades.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class Ocorrencia {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "aplicacao_id")
+    @JsonIgnoreProperties("ocorrencias")
     private Aplicacao aplicacao;
 
     @NotNull

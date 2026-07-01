@@ -1,9 +1,8 @@
 package br.edu.ifac.n2.apivulnerabilidades.controller;
 
-import br.edu.ifac.n2.apivulnerabilidades.model.Aplicacao;
-import br.edu.ifac.n2.apivulnerabilidades.model.Ocorrencia;
+import br.edu.ifac.n2.apivulnerabilidades.dto.OcorrenciaRequest;
+import br.edu.ifac.n2.apivulnerabilidades.dto.OcorrenciaResponse;
 import br.edu.ifac.n2.apivulnerabilidades.model.StatusOcorrencia;
-import br.edu.ifac.n2.apivulnerabilidades.model.Vulnerabilidade;
 import br.edu.ifac.n2.apivulnerabilidades.service.OcorrenciaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -34,13 +33,21 @@ class OcorrenciaControllerTest {
     @MockitoBean
     private OcorrenciaService service;
 
+    private OcorrenciaResponse criarResponse(Long id) {
+        OcorrenciaResponse.AplicacaoResumo app = new OcorrenciaResponse.AplicacaoResumo(1L, "App Teste");
+        OcorrenciaResponse.VulnerabilidadeResumo vuln = new OcorrenciaResponse.VulnerabilidadeResumo(1L, "CVE-001");
+        OcorrenciaResponse r = new OcorrenciaResponse();
+        r.setId(id);
+        r.setAplicacao(app);
+        r.setVulnerabilidade(vuln);
+        r.setDataDescoberta(LocalDate.now());
+        r.setStatus(StatusOcorrencia.ABERTA);
+        return r;
+    }
+
     @Test
     void listar_DeveRetornar200ComLista() throws Exception {
-        Ocorrencia o = new Ocorrencia();
-        o.setId(1L);
-        o.setStatus(StatusOcorrencia.ABERTA);
-
-        when(service.listarTodas()).thenReturn(List.of(o));
+        when(service.listarTodas()).thenReturn(List.of(criarResponse(1L)));
 
         mockMvc.perform(get("/api/ocorrencias"))
                 .andExpect(status().isOk())
@@ -58,11 +65,7 @@ class OcorrenciaControllerTest {
 
     @Test
     void buscarPorId_QuandoExiste_Retorna200() throws Exception {
-        Ocorrencia o = new Ocorrencia();
-        o.setId(1L);
-        o.setStatus(StatusOcorrencia.ABERTA);
-
-        when(service.buscarPorId(1L)).thenReturn(Optional.of(o));
+        when(service.buscarPorId(1L)).thenReturn(Optional.of(criarResponse(1L)));
 
         mockMvc.perform(get("/api/ocorrencias/1"))
                 .andExpect(status().isOk())
@@ -79,33 +82,27 @@ class OcorrenciaControllerTest {
 
     @Test
     void criar_ComDadosValidos_Retorna200() throws Exception {
-        Aplicacao app = new Aplicacao();
-        app.setId(1L);
-        Vulnerabilidade vuln = new Vulnerabilidade();
-        vuln.setId(1L);
+        when(service.salvar(any())).thenReturn(criarResponse(1L));
 
-        Ocorrencia request = new Ocorrencia();
-        request.setAplicacao(app);
-        request.setVulnerabilidade(vuln);
+        OcorrenciaRequest request = new OcorrenciaRequest();
+        OcorrenciaRequest.EntidadeRef refApp = new OcorrenciaRequest.EntidadeRef();
+        refApp.setId(1L);
+        request.setAplicacao(refApp);
+        OcorrenciaRequest.EntidadeRef refVuln = new OcorrenciaRequest.EntidadeRef();
+        refVuln.setId(1L);
+        request.setVulnerabilidade(refVuln);
         request.setDataDescoberta(LocalDate.now());
-        request.setStatus(StatusOcorrencia.ABERTA);
-
-        Ocorrencia salva = new Ocorrencia();
-        salva.setId(1L);
-        salva.setStatus(StatusOcorrencia.ABERTA);
-
-        when(service.salvar(any())).thenReturn(salva);
 
         mockMvc.perform(post("/api/ocorrencias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     void atualizarStatus_TransicaoValida_Retorna200() throws Exception {
-        Ocorrencia atualizada = new Ocorrencia();
-        atualizada.setId(1L);
+        OcorrenciaResponse atualizada = criarResponse(1L);
         atualizada.setStatus(StatusOcorrencia.EM_CORRECAO);
 
         when(service.atualizarStatus(1L, StatusOcorrencia.EM_CORRECAO)).thenReturn(atualizada);
