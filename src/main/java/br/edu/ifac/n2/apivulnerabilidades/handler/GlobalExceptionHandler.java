@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
 
@@ -17,18 +18,31 @@ public class GlobalExceptionHandler {
                 .map(erro -> erro.getField() + ": " + erro.getDefaultMessage())
                 .reduce((a, b) -> a + "; " + b)
                 .orElse("Erro de validação");
-        return ResponseEntity.badRequest().body(Map.of("erro", mensagem));
+        Map<String, String> body = new java.util.HashMap<>();
+        body.put("erro", mensagem);
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(IllegalArgumentException ex) {
+        Map<String, String> body = new java.util.HashMap<>();
+        body.put("erro", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("erro", ex.getMessage()));
+                .body(body);
     }
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, String>> handleBadRequest(IllegalStateException ex) {
+        Map<String, String> body = new java.util.HashMap<>();
+        body.put("erro", ex.getMessage());
         return ResponseEntity.badRequest()
-                .body(Map.of("erro", ex.getMessage()));
+                .body(body);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, String>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        Map<String, String> body = new java.util.HashMap<>();
+        body.put("erro", "Valor inválido para o parâmetro: " + ex.getValue());
+        return ResponseEntity.badRequest().body(body);
     }
 }

@@ -6,6 +6,7 @@ import br.edu.ifac.n2.apivulnerabilidades.model.Vulnerabilidade;
 import br.edu.ifac.n2.apivulnerabilidades.repository.VulnerabilidadeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,12 @@ public class VulnerabilidadeService {
     }
 
     public List<VulnerabilidadeResponse> listarTodas() {
-        return repository.findAll().stream()
-                .map(VulnerabilidadeResponse::fromEntity)
-                .toList();
+        List<VulnerabilidadeResponse> list = new ArrayList<>();
+        for (Vulnerabilidade vulnerabilidade : repository.findAll()) {
+            VulnerabilidadeResponse vulnerabilidadeResponse = VulnerabilidadeResponse.fromEntity(vulnerabilidade);
+            list.add(vulnerabilidadeResponse);
+        }
+        return list;
     }
 
     public Optional<VulnerabilidadeResponse> buscarPorId(Long id) {
